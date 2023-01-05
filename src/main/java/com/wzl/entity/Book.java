@@ -21,9 +21,13 @@ public class Book {
     private String publicationTime;
     private String weight;
     private String link;
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        if (CharSequenceUtil.contains(title, subtitle)) {
+            subtitle = "";
+        }
         sb.append("《").append(title).append(CharSequenceUtil.nullToDefault(subtitle, "")).append("》");
         sb.append(" ").append(author);
         sb.append(" ").append(publicationTime);
@@ -32,4 +36,16 @@ public class Book {
         sb.append(" [豆瓣链接](").append(link).append(")");
         return sb.toString();
     }
+
+    public String getSimpleName() {
+        return title;
+    }
+
+    public String getMiddleName() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("《").append(title).append("》");
+        sb.append(" ").append(author);
+        return sb.toString();
+    }
+
 }

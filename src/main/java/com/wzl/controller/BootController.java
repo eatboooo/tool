@@ -2,12 +2,12 @@ package com.wzl.controller;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import com.wzl.entity.Book;
+import com.wzl.entity.BookVO;
 import com.wzl.entity.RawBook;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BootController {
     @PostMapping("/tool/getBook")
-    public ResponseEntity<String> responseEntity(@RequestBody() RawBook rawBook) {
+    public ResponseEntity<BookVO> responseEntity(@RequestBody() RawBook rawBook) {
         String lines[] = rawBook.getStr().split("\\r?\\n");
         Book entity = new Book();
         for (String s : lines) {
@@ -42,7 +42,11 @@ public class BootController {
                 entity.setLink(CharSequenceUtil.subAfter(s, "豆瓣链接: ", true));
             }
         }
-        return new ResponseEntity<>(entity.toString(), HttpStatus.OK);
+
+        return new ResponseEntity<>(BookVO.builder()
+                .fullName(entity.toString())
+                .simpleName(entity.getSimpleName())
+                .middleName(entity.getMiddleName()).build(), HttpStatus.OK);
     }
 
 }
